@@ -1,3 +1,16 @@
+deployment:
+  podAnnotations: {}
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+    add:
+      - NET_BIND_SERVICE
+  readOnlyRootFilesystem: true
+  runAsNonRoot: false
+  runAsUser: 0
+
 providers:
   kubernetesCRD:
     enabled: true
