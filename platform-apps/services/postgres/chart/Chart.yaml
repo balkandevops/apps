@@ -1,0 +1,4 @@
+apiVersion: v2
+name: postgres-prereqs
+version: 0.1.0
+description: PostgreSQL prerequisites — namespace and ExternalSecrets

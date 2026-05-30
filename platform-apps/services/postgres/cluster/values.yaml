@@ -1,0 +1,37 @@
+cluster:
+  name: postgres
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.6
+  imagePullPolicy: IfNotPresent
+
+instances: 1
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+storage:
+  storageClass: default
+  size: 10Gi
+
+postgresql:
+  parameters:
+    max_connections: "100"
+    shared_buffers: 128MB
+    effective_cache_size: 384MB
+    work_mem: 4MB
+    maintenance_work_mem: 64MB
+    wal_compression: "on"
+
+bootstrap:
+  database: ghost
+  owner: ghost
+  ownerSecretName: postgres-ghost-app
+
+superuserSecretName: postgres-superuser
+
+monitoring:
+  enablePodMonitor: false

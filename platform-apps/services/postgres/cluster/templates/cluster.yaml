@@ -1,0 +1,41 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.cluster.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  imageName: {{ .Values.cluster.imageName | quote }}
+  imagePullPolicy: {{ .Values.cluster.imagePullPolicy }}
+  instances: {{ .Values.instances }}
+
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: {{ .Values.superuserSecretName }}
+
+  bootstrap:
+    initdb:
+      database: {{ .Values.bootstrap.database }}
+      owner: {{ .Values.bootstrap.owner }}
+      secret:
+        name: {{ .Values.bootstrap.ownerSecretName }}
+      encoding: UTF8
+      localeCType: en_US.UTF-8
+      localeCollate: en_US.UTF-8
+
+  postgresql:
+    parameters:
+      {{- range $key, $value := .Values.postgresql.parameters }}
+      {{ $key }}: {{ $value | quote }}
+      {{- end }}
+
+  resources:
+    {{- toYaml .Values.resources | nindent 4 }}
+
+  storage:
+    storageClass: {{ .Values.storage.storageClass }}
+    size: {{ .Values.storage.size }}
+
+  monitoring:
+    enablePodMonitor: false

@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 200Mi
+  limits:
+    cpu: 500m
+    memory: 500Mi
+
+monitoring:
+  podMonitorEnabled: false
+  serviceMonitorEnabled: false
+
+crds:
+  create: true

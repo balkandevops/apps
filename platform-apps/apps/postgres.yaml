@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    app.kubernetes.io/part-of: platform-apps-app-of-apps
+    role: child
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: applications
+  sources:
+    - repoURL: https://github.com/balkandevops/apps
+      targetRevision: HEAD
+      ref: values
+    - repoURL: https://github.com/balkandevops/apps
+      targetRevision: HEAD
+      path: platform-apps/services/postgres/chart
+      helm:
+        releaseName: postgres-prereqs
+    - repoURL: https://github.com/balkandevops/apps
+      targetRevision: HEAD
+      path: platform-apps/services/postgres/cluster
+      helm:
+        releaseName: postgres
+        valueFiles:
+          - $values/platform-apps/services/postgres/cluster/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: postgres
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
