@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: ghost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      containers:
+        - name: ghost
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 2368
+          env:
+            - name: url
+              value: "https://{{ .Values.domain }}"
+            - name: database__client
+              value: postgres
+            - name: database__connection__host
+              value: {{ .Values.database.host }}
+            - name: database__connection__port
+              value: {{ .Values.database.port | quote }}
+            - name: database__connection__database
+              value: {{ .Values.database.name }}
+            - name: database__connection__user
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.secretUsernameKey }}
+            - name: database__connection__password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.secretPasswordKey }}
+            - name: NODE_ENV
+              value: production
+          volumeMounts:
+            - name: ghost-content
+              mountPath: /var/lib/ghost/content
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /ghost/api/v4/admin/site/
+              port: 2368
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ghost/api/v4/admin/site/
+              port: 2368
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: ghost-content
+          persistentVolumeClaim:
+            claimName: ghost-content

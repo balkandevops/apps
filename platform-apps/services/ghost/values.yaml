@@ -1,0 +1,32 @@
+image:
+  repository: ghost
+  tag: "5.87.2-alpine"
+  pullPolicy: IfNotPresent
+
+domain: balkandevops.com
+
+database:
+  host: postgres-rw.postgres.svc.cluster.local
+  port: 5432
+  name: ghost
+  existingSecret: postgres-ghost-app
+  secretPasswordKey: password
+  secretUsernameKey: username
+
+mail:
+  enabled: false
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+persistence:
+  size: 5Gi
+  storageClass: default
+
+tls:
+  issuer: letsencrypt-staging
