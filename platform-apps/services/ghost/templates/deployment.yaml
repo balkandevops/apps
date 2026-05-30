@@ -25,23 +25,9 @@ spec:
             - name: url
               value: "https://{{ .Values.domain }}"
             - name: database__client
-              value: postgres
-            - name: database__connection__host
-              value: {{ .Values.database.host }}
-            - name: database__connection__port
-              value: {{ .Values.database.port | quote }}
-            - name: database__connection__database
-              value: {{ .Values.database.name }}
-            - name: database__connection__user
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.database.existingSecret }}
-                  key: {{ .Values.database.secretUsernameKey }}
-            - name: database__connection__password
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.database.existingSecret }}
-                  key: {{ .Values.database.secretPasswordKey }}
+              value: sqlite3
+            - name: database__connection__filename
+              value: /var/lib/ghost/content/data/ghost.db
             - name: NODE_ENV
               value: production
           volumeMounts:

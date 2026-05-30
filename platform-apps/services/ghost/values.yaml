@@ -6,15 +6,7 @@ image:
 domain: balkandevops.com
 
 database:
-  host: postgres-rw.postgres.svc.cluster.local
-  port: 5432
-  name: ghost
-  existingSecret: postgres-ghost-app
-  secretPasswordKey: password
-  secretUsernameKey: username
-
-mail:
-  enabled: false
+  client: sqlite3
 
 resources:
   requests:
