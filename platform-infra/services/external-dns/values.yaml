@@ -1,0 +1,24 @@
+provider:
+  name: cloudflare
+
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: cloudflare-api-token
+        key: cloudflare_api_token
+
+domainFilters:
+  - balkandevops.com
+
+policy: sync
+
+txtOwnerId: balkandevops-personal
+
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "100m"
+    memory: "128Mi"
