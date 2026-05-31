@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hugo
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: hugo
+  ports:
+    - port: 80
+      targetPort: 80

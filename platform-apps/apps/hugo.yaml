@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ghost
+  name: hugo
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "2"
@@ -15,14 +15,14 @@ spec:
   source:
     repoURL: https://github.com/balkandevops/apps
     targetRevision: HEAD
-    path: platform-apps/services/ghost
+    path: platform-apps/services/hugo
     helm:
-      releaseName: ghost
+      releaseName: hugo
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: ghost
+    namespace: hugo
   syncPolicy:
     automated:
       prune: true

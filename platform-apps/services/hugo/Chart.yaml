@@ -1,0 +1,6 @@
+apiVersion: v2
+name: hugo
+description: BalkanDevOps blog — Hugo + Caddy on AKS
+type: application
+version: 0.1.0
+appVersion: "latest"
