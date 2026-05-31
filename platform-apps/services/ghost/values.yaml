@@ -3,7 +3,7 @@ image:
   tag: "5.87.2-alpine"
   pullPolicy: IfNotPresent
 
-domain: balkandevops.com
+domain: www.balkandevops.com
 
 database:
   client: sqlite3
