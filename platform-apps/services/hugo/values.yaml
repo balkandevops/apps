@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/balkandevops/blog
-  tag: "feade51c263d350a826ec6b7348420fe75f4d02f"
+  tag: "dc572bc758999133f98d4a2953c29bb8d4102cb6"
   pullPolicy: Always
 
 domain: www.balkandevops.com
